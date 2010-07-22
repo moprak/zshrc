@@ -1,0 +1,123 @@
+# alias for editing aliases
+alias a='vim $HOME/.bash_stuff/aliases'
+
+# alias for checking after editing bash_stuff
+alias eb='exec bash'
+
+# alias for opening any document
+alias o='kde-open 2> /dev/null > /dev/null'
+
+# DC++ !!
+alias dcpp='wine /mnt/win/Program\ Files/ApexDC++/ApexDC.exe'
+
+# MATLAB
+
+alias matlab='$HOME/matlab/bin/matlab'
+
+# TODO message for the day :)
+alias dtodo='xmessage -display :0.0 -file "$HOME/todo/`date "+%a"`" -title "TODO"'
+alias ntodo='xmessage -display :0.0 -file "$HOME/todo/todo" -title "TODO"'
+alias ptodo='xmessage -display :0.0 -file "$HOME/proj/todo" -title "Project  TODO"'
+alias todo='cat "$HOME/todo/`date "+%a"`" "$HOME/todo/todo" "$HOME/proj/todo"| xargs -0 xmessage -display :0.0 -title "TODO"'
+alias tomo='cat "$HOME/todo/`date --date="1 day" "+%a"`" "$HOME/todo/todo" | xargs -0 xmessage -display :0.0 -title "TODO"' #Tomorrow's list
+alias tt='cat "$HOME/todo/`date "+%a"`" "$HOME/todo/todo" "$HOME/proj/todo" > temptodofile; whiptail --scrolltext --textbox temptodofile 50 100 --title TODO ' # Terminal version :)
+alias tot='cat "$HOME/todo/`date --date="1 day" "+%a"`" "$HOME/todo/todo" "$HOME/proj/todo" > temptodofile; whiptail --scrolltext --textbox temptodofile 50 100 --title TODO' # Tomorrow's list
+alias tpt='whiptail --scrolltext --textbox $HOME/proj/todo 30 100'
+
+#Editing TODO messages
+alias t='vim $HOME/todo/todo'
+alias pt='vim $HOME/proj/todo'
+alias dt='vim $HOME/todo/`date "+%a"`' 
+alias mon='vim $HOME/todo/Mon'
+alias tue='vim $HOME/todo/Tue'
+alias wed='vim $HOME/todo/Wed'
+alias thu='vim $HOME/todo/Thu'
+alias fri='vim $HOME/todo/Fri'
+alias sat='vim $HOME/todo/Sat'
+alias sun='vim $HOME/todo/Sun'
+
+# ls aliases
+alias ls='ls --sort=extension --color=auto -CF'
+alias l='ls --sort=extension --color=auto -CF'
+alias lll='ls -Alh --sort=size . | tr -s " " | cut -d " " -f 5,9' # ls in sorted size, with everything else removed
+alias ll='ls -lh'
+alias lal='ls -Alh'
+alias l.='ls .[A-Za-z]*'
+alias la='ls -CF -A'
+alias dir='ls --color=auto --format=vertical'
+alias vdir='ls --color=auto --format=long'
+alias lc='ls *.cpp'
+
+#Avoid Mistakes
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+#Typos
+alias cd.='cd ..'
+alias cd..='cd ..'
+
+#Editing network/interfaces
+
+alias net='sudo vim /etc/network/interfaces'
+
+#Directories
+alias m='cd $HOME/proj/mycode'
+alias win='cd /mnt/win/Users/prakash'
+alias d='cd /home/prak/kde/src/4/KDE'
+#alias ks='cd /home/prak/devel/kde/src/branches/kstars/unfrozen/kstars/kstars'
+alias ksd='cd /home/prak/kde/src/4/KDE/kdeedu/kstars/kstars'
+alias music='cd /mnt/win/Users/prakash/Music'
+alias dow='cd /home/prak/.dc++/Downloads/'
+alias cdl='cd;clear'
+
+#SSH
+alias dcf='ssh -X ae07b014@dcf'
+alias lab='ssh -X -L 3996:proxy.iitm.ac.in:3128 prakash@lab'
+alias i='ssh -X -L 3996:proxy.iitm.ac.in:3128 ae07b014@dcf'
+alias ii='ssh -X -L 3333:proxy.iitm.ac.in:3128 ae07b014@dcf'
+
+#Make life better
+alias grep='grep -in --color'
+alias du='du -h'
+alias df='df -h'
+
+#Arbit aliases
+alias e='vim'
+alias inject='eject -t'
+# alias patmv='for i in *; do mv "$i" `echo $i | sed "s\ \_\g"`; done;'
+
+#Program Shortcuts
+alias term='xterm -fg WHITE -bg BLACK &'
+alias s='screen'
+alias cl='clear'
+
+# Screenshot to image.png
+alias sc='sleep 10;import -display :0.0 -window root image.png'
+
+#KStars
+alias avail='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars avail --log -b > avail.txt &'
+alias merge='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars merge'
+alias share='cd /home/prak/.kde4/share/apps/kstars'
+alias mk='make -j4 && make install && kstars'
+alias kscl='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars/kstars;cl'
+
+#Amarok
+alias ambuild='cd /home/prak/amarok&&git pull --rebase&&cd build && cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=debugfull .. && make && sudo make install'
+
+#Project Stuff
+alias p='cd $HOME/proj/nozzle'
+alias pc='cd /home/prak/proj/mycode && \cp -f ../nozzle/{*.{cpp,h,m},Makefile} nozzle && git add nozzle/{*.{cpp,h,m},Makefile} && git commit -m "updating" && git push'
+alias mplot='matlab -nodesktop -r plotter'
+
+#Program Aliases
+
+#CD Recording
+alias cdrec='cdrecord -v -pad speed=1 dev=1000,0,0' 
+
+#TimeTable
+alias timetable='evince $HOME/TimeTable.pdf&'
+
+#I like my fortune colored :P
+alias f='echo -ne "${BROWN}";fortune;echo ""'
+
