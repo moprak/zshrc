@@ -1,8 +1,62 @@
 # alias for editing aliases
-alias a='vim $HOME/.bash_stuff/aliases'
+alias a='vim $HOME/.zsh_files/aliases'
 
-# alias for checking after editing bash_stuff
-alias eb='exec bash'
+#================== Suffix Aliases =================#
+alias -s tex=vim
+alias -s txt=vim
+alias -s html=firefox
+alias -s org=firefox
+alias -s com=firefox
+alias -s in=firefox
+#==================================================#
+
+#================= Global Aliases =================#
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g L="| less"
+alias -g LL="2>&1 | less"
+alias -g M='| most'
+alias -g G='| grep'
+alias -g H='| head'
+alias -g HL='|& head -20'
+alias -g TL='| tail -20'
+alias -g T='| tail'
+alias -g DN=/dev/null
+alias -g S='| sort'
+alias -g SH='| sort -hr'
+alias -g HS='| sort -hr'
+alias -g NS='| sort -n'
+alias -g RNS='| sort -nr'
+alias -g US='| sort -u'
+alias -g C='| wc -l'
+alias -g NE="2> /dev/null"
+alias -g NUL="> /dev/null 2>&1"
+alias -g X='| xargs'
+
+alias -g CA="2>&1 | cat -A"
+alias -g D="DISPLAY=:0.0"
+alias -g ED="export DISPLAY=:0.0"
+alias -g EG='|& egrep'
+alias -g EH='|& head'
+alias -g EL='|& less'
+alias -g ELS='|& less -S'
+alias -g ETL='|& tail -20'
+alias -g ET='|& tail'
+alias -g F=' | fmt -'
+alias -g Sk="*~(*.bz2|*.gz|*.tgz|*.zip|*.z)"
+alias -g LS='| less -S'
+alias -g MO='| more'
+alias -g PIPE='|'
+alias -g R=' > /c/aaa/tee.txt '
+alias -g VM=/var/log/messages
+alias -g X0G='| xargs -0 egrep'
+alias -g X0='| xargs -0'
+alias -g XG='| xargs egrep'
+#=================================================#
+
+# alias for checking after editing zsh_files
+alias ez='exec zsh'
 
 # alias for opening any document
 alias o='kde-open 2> /dev/null > /dev/null'
@@ -47,6 +101,11 @@ alias la='ls -CF -A'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
 alias lc='ls *.cpp'
+alias lnew='ls -ld *(/om[1])' # Show the newest directory
+alias lm='ls -tld **/*(m-2)' # In the current tree, show files newer than 2 days old
+
+#ip address
+alias ipaddr='print ${${$(LC_ALL=C /sbin/ifconfig eth0)[7]}:gs/addr://}'
 
 #Avoid Mistakes
 alias rm='rm -i'
@@ -64,11 +123,11 @@ alias net='sudo vim /etc/network/interfaces'
 #Directories
 alias m='cd $HOME/proj/mycode'
 alias win='cd /mnt/win/Users/prakash'
-alias d='cd /home/prak/kde/src/4/KDE'
-#alias ks='cd /home/prak/devel/kde/src/branches/kstars/unfrozen/kstars/kstars'
-alias ksd='cd /home/prak/kde/src/4/KDE/kdeedu/kstars/kstars'
+alias d='cd $HOME/kde/src/4/KDE'
+#alias ks='cd $HOME/devel/kde/src/branches/kstars/unfrozen/kstars/kstars'
+alias ksd='cd $HOME/kde/src/4/KDE/kdeedu/kstars/kstars'
 alias music='cd /mnt/win/Users/prakash/Music'
-alias dow='cd /home/prak/.dc++/Downloads/'
+alias dow='cd $HOME/.dc++/Downloads/'
 alias cdl='cd;clear'
 
 #SSH
@@ -96,18 +155,18 @@ alias cl='clear'
 alias sc='sleep 10;import -display :0.0 -window root image.png'
 
 #KStars
-alias avail='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars avail --log -b > avail.txt &'
-alias merge='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars merge'
-alias share='cd /home/prak/.kde4/share/apps/kstars'
+alias avail='cd $HOME/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars avail --log -b > avail.txt &'
+alias merge='cd $HOME/kde/src/branches/kstars/unfrozen/kstars;svnmerge.py -S svn+ssh://prakash@svn.kde.org/home/kde/trunk/KDE/kdeedu/kstars merge'
+alias share='cd $HOME/.kde4/share/apps/kstars'
 alias mk='make -j4 && make install && kstars'
-alias kscl='cd /home/prak/kde/src/branches/kstars/unfrozen/kstars/kstars;cl'
+alias kscl='cd $HOME/kde/src/branches/kstars/unfrozen/kstars/kstars;cl'
 
 #Amarok
-alias ambuild='cd /home/prak/amarok&&git pull --rebase&&cd build && cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=debugfull .. && make && sudo make install'
+alias ambuild='cd $HOME/amarok&&git pull --rebase&&cd build && cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=debugfull .. && make && sudo make install'
 
 #Project Stuff
 alias p='cd $HOME/proj/nozzle'
-alias pc='cd /home/prak/proj/mycode && \cp -f ../nozzle/{*.{cpp,h,m},Makefile} nozzle && git add nozzle/{*.{cpp,h,m},Makefile} && git commit -m "updating" && git push'
+alias pc='cd $HOME/proj/mycode && \cp -f ../nozzle/{*.{cpp,h,m},Makefile} nozzle && git add nozzle/{*.{cpp,h,m},Makefile} && git commit -m "updating" && git push'
 alias mplot='matlab -nodesktop -r plotter'
 
 #Program Aliases

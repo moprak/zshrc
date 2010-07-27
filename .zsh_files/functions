@@ -53,3 +53,35 @@ plotp () {
 	) | gnuplot -persist
 }
 
+newdirs() {
+    I=1
+    while ( [[ $I -le $1 ]] ) ; do 
+    ls -ld *(/om[$I])
+    let I++
+    done;
+}
+
+newfiles() {
+    I=$1
+    let I++
+    ls -Alht | head -$I | tail -$1
+}
+
+# Removes spaces and replace with -
+removespace() {
+    autoload zmv
+    zmv -n '(**/)(* *)' '$1${2//( #-## #| ##)/-}'
+}
+
+# lowercase all extensions (i. e. *.JPG) incl. subfolders
+lowerextensions() {
+    autoload zmv
+        zmv '(**/)(*).(#i)jpg' '$1$2.jpg'
+        zmv '(**/)(*).(#i)png' '$1$2.png'
+        zmv '(**/)(*).(#i)pdf' '$1$2.pdf'
+        zmv '(**/)(*).(#i)mp3' '$1$2.mp3'
+}
+sanefiles() {
+    autoload zmv
+    zmv -n '(**/)(*)' '$1${2//[^A-Za-z0-9._]/_}' # Removes special characters
+}
