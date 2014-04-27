@@ -1,0 +1,97 @@
+#======================================================================
+# Completion fundaes follow
+#======================================================================
+
+autoload -Uz compinit && compinit
+zmodload zsh/complist
+
+# Fast completion with caching
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Use colors in the menu selection
+zstyle ':completion:*' list-colors $(dircolors)
+
+# Insert all expansions for expand completer
+zstyle ':completion:*:expand:*' tag-order all-expansions
+
+# Offer indexes before parameters in subscripts
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# Match uppercase from lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+_force_rehash() {
+  (( CURRENT == 1 )) && rehash
+  return 1  # Because we didn't really complete anything
+}
+
+# List of completers to use
+zstyle ':completion:*' completer \
+  _oldlist _expand _force_rehash _complete _ignored _match _correct _approximate _prefix
+
+# Formatting and messages
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+
+# Allow one error for every three characters typed in approximate completer
+zstyle ':completion:*:match:*' original only
+zstyle -e ':completion:*:approximate:*' \
+        max-errors 'reply=($((($#PREFIX+$#SUFFIX)/2))numeric)'
+
+# Add colors to processes for kill completion
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
+
+# Complete processes
+zstyle ':completion:*:*:kill:*:processes' command 'ps --forest -A -o pid,user,cmd'
+zstyle ':completion:*:processes-names' command 'ps axho command'
+
+# Expand globs when tab-completing
+zstyle ':completion:*' glob 'yes'
+
+# Don't complete backup files as executables
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+# Don't let ../<tab> match $PWD
+zstyle ':completion:*' ignore-parents parent pwd
+
+# Don't match the same filenames multiple times
+zstyle ':completion::*:(rm|vim|kill|diff):*' ignore-line true
+
+# Filename suffixes to ignore during completion (except after rm command)
+zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o' '*?.c~' \
+    '*?.old' '*?.pro'
+
+# 1. All /etc/hosts hostnames are in autocomplete
+# 2. If you have a comment in /etc/hosts like #%foobar.domain,
+#    then foobar.domain will show up in autocomplete!
+zstyle ':completion:*' hosts $(awk '/^[^#]/ {print $2 $3" "$4" "$5}' /etc/hosts | grep -v ip6- && grep "^#%" /etc/hosts | awk -F% '{print $2}')
+
+# Ignore completion functions (until the _ignored completer)
+zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:*:*:users' ignored-patterns \
+        adm apache bin daemon games gdm halt ident junkbust lp mail mailnull \
+        named news nfsnobody nobody nscd ntp operator pcap postgres radvd \
+        rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs avahi-autoipd\
+        avahi backup messagebus beagleindex debian-tor dhcp dnsmasq fetchmail\
+        firebird gnats haldaemon hplip irc klog list man cupsys postfix\
+        proxy syslog www-data mldonkey sys snort dbus ftp hal http mysql usbmux
+
+# SSH Completion
+zstyle ':completion:*:scp:*' tag-order \
+   files users 'hosts:-host hosts:-domain:domain hosts:-ipaddr"IP\ Address *'
+zstyle ':completion:*:scp:*' group-order \
+   files all-files users hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:ssh:*' tag-order \
+   users 'hosts:-host hosts:-domain:domain hosts:-ipaddr"IP\ Address *'
+zstyle ':completion:*:ssh:*' group-order \
+   hosts-domain hosts-host users hosts-ipaddr

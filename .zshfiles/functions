@@ -1,0 +1,82 @@
+function ga(){
+    git-add $1
+}
+
+function gc(){
+    git-commit -m $1
+}
+
+function extract () {
+        if [ -f $1 ] ; then
+                case $1 in
+                        *.tar.bz2)  tar         xjf   $1;;
+                        *.tar.gz)   tar         xzf   $1;;
+                        *.bz2)      bunzip2           $1;;
+                        *.rar)      rar         x     $1;;
+                        *.gz)       gunzip            $1;;
+                        *.tar)      tar         xf    $1;;
+                        *.tbz2)     tar         xjf   $1;;
+                        *.tgz)      tar         xzf   $1;;
+                        *.zip)      unzip             $1;;
+                        *.Z)        uncompress        $1;;
+                        *)          echo "'$1' cannot be extracted via extract()" ;;
+                esac
+        else
+                echo "'$1' is not a valid file"
+        fi
+}
+
+
+function psg() {
+        if [ ! -z $1 ] ; then
+                echo "Grepping for processes matching $1..."
+                ps aux | grep $1
+        else
+                echo "!! Need name to grep for"
+        fi
+}
+
+plotp () {
+    echo -n '(echo -n plot \"'$1'\" with lines; '
+    for i in $*[2,$#@]; echo -n 'echo -n , \"'$i'\" with lines; '
+    echo 'echo ) | gnuplot -persist'
+
+    (
+    echo -n plot \"$1\" with lines
+    for i in $*[2,$#@]; echo -n "," \"$i\" "with lines"
+    echo
+    ) | gnuplot -persist
+}
+
+newdirs() {
+    I=1
+    while ( [[ $I -le $1 ]] ) ; do
+    ls -ld *(/om[$I])
+    let I++
+    done;
+}
+
+newfiles() {
+    I=$1
+    let I++
+    ls -Alht | head -$I | tail -$1
+}
+
+# Removes spaces and replace with -
+removespace() {
+    autoload zmv
+    zmv -n '(**/)(* *)' '$1${2//( #-## #| ##)/-}'
+}
+
+# lowercase all extensions (i. e. *.JPG) incl. subfolders
+lowerextensions() {
+    autoload zmv
+        zmv '(**/)(*).(#i)jpg' '$1$2.jpg'
+        zmv '(**/)(*).(#i)png' '$1$2.png'
+        zmv '(**/)(*).(#i)pdf' '$1$2.pdf'
+        zmv '(**/)(*).(#i)mp3' '$1$2.mp3'
+}
+sanefiles() {
+    autoload zmv
+    zmv -n '(**/)(*)' '$1${2//[^A-Za-z0-9._]/_}' # Removes special characters
+}
