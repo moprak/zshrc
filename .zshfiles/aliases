@@ -19,6 +19,7 @@ alias lm='ls -tld **/*(m-2)' # In the current tree, show files newer than 2 days
 alias grep='grep -in --color'
 alias du='du -h'
 alias df='df -h'
+alias sudo='nocorrect sudo'
 
 # Arbit aliases
 alias e='vim'

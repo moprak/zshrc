@@ -1,0 +1,74 @@
+################################
+#
+#    Autocompletion
+#
+################################
+
+autoload -Uz compinit && compinit
+zmodload zsh/complist
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+
+xdvi() { command xdvi ${*:-*.dvi(om[1])} }
+zstyle ':completion:*:*:xdvi:*' menu yes select
+zstyle ':completion:*:*:xdvi:*' file-sort time
+
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+
+_force_rehash() {
+  (( CURRENT == 1 )) && rehash
+  return 1	# Because we didn't really complete anything
+}
+
+zstyle ':completion:*' completer \
+  _oldlist _expand _force_rehash _complete _ignored _match _correct _approximate _prefix
+
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+
+zstyle ':completion:*:match:*' original only
+zstyle -e ':completion:*:approximate:*' \
+        max-errors 'reply=($((($#PREFIX+$#SUFFIX)/2))numeric)'
+
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
+# zstyle ':completion:*:*:kill:*' menu yes select
+# zstyle ':completion:*:kill:*'   force-list always
+
+# zstyle ':completion:*' squeeze-slashes true
+
+zstyle ':completion:*' list-colors $(dircolors)            # Use colors in the menu selection
+zstyle ':completion:*' glob 'yes'                # Expand globs when tab-completing
+zstyle ':completion:*:functions' ignored-patterns '_*'        # Ignore completion functions for unavailable commands
+
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~' # Don't complete backup files as executables
+zstyle ':completion:*' ignore-parents parent pwd        # Don't let ../<tab> match $PWD
+zstyle ':completion::*:(rm|vi|kill|diff):*' ignore-line true        # Don't match the same filenames multiple times
+
+zstyle ':completion:*:*:*:users' ignored-patterns \
+    adm apache bin daemon games gdm halt ident junkbust lp mail mailnull \
+    named news nfsnobody nobody nscd ntp operator pcap postgres radvd \
+    rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs backup  bind  \
+    dictd  gnats  identd  irc  man  messagebus  postfix  proxy  sys  www-data
+
+rationalise-dot() {
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+=/..
+  else
+    LBUFFER+=.
+  fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
