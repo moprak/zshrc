@@ -22,13 +22,10 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
 
 
-_force_rehash() {
-  (( CURRENT == 1 )) && rehash
-  return 1	# Because we didn't really complete anything
-}
+zstyle ':completion:*' rehash true
 
 zstyle ':completion:*' completer \
-  _oldlist _expand _force_rehash _complete _ignored _match _correct _approximate _prefix
+  _oldlist _expand _complete _ignored _match _correct _approximate _prefix
 
 zstyle ':completion:*:descriptions' format "- %d -"
 zstyle ':completion:*:corrections' format "- %d - (errors %e})"
